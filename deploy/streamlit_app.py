@@ -4,7 +4,6 @@ import pandas as pd
 import re
 import os
 csv_path = os.path.join(os.path.dirname(__file__), "customer_reviews.csv")
-pd.read_csv(csv_path)
 
 
 # Helper function to clean text
@@ -23,10 +22,12 @@ col1, col2 = st.columns(2)
 with col1:
     if st.button("📥 Ingest Dataset"):
         try:
-            st.session_state["df"] = pd.read_csv("customer_reviews.csv")
+            st.session_state["df"] = pd.read_csv(csv_path)
             st.success("Dataset loaded successfully!")
         except FileNotFoundError:
-            st.error("Dataset not found. Please check the file path.")
+            st.error(f"Dataset not found at: {csv_path}")
+        except Exception as e:
+            st.error(f"Error loading dataset: {e}")
 
 with col2:
     if st.button("🧹 Parse Reviews"):
@@ -52,4 +53,5 @@ if "df" in st.session_state:
     st.subheader("Sentiment Score by Product")
     grouped = st.session_state["df"].groupby(["PRODUCT"])["SENTIMENT_SCORE"].mean()
     st.bar_chart(grouped)
+
 
