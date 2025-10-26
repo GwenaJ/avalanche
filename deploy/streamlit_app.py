@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import re
 import os
+csv_path = os.path.join(os.path.dirname(__file__), "customer_reviews.csv")
+pd.read_csv(csv_path)
 
 
 # Helper function to clean text
@@ -50,3 +52,4 @@ if "df" in st.session_state:
     st.subheader("Sentiment Score by Product")
     grouped = st.session_state["df"].groupby(["PRODUCT"])["SENTIMENT_SCORE"].mean()
     st.bar_chart(grouped)
+
